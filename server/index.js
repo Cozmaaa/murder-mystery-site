@@ -1,11 +1,12 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const path = require('path');
-require('dotenv').config();
-const documentRouter = require('./routes/documentRoutes');
-const suspectRouter = require('./routes/suspectRoutes');
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const path = require("path");
+require("dotenv").config();
+const documentRouter = require("./routes/documentRoutes");
+const suspectRouter = require("./routes/suspectRoutes");
+const suspectChattingRoutes = require("./routes/suspectChattingRoutes");
 
 const app = express();
 
@@ -13,19 +14,18 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/api/documents',documentRouter);
-app.use('/api/suspects',suspectRouter);
-app.use('/public', express.static(path.join(__dirname, 'public')));
-
+app.use("/api/documents", documentRouter);
+app.use("/api/suspects", suspectRouter);
+app.use("/api/response", suspectChattingRoutes);
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 mongoose
   .connect(process.env.DATABASE_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('Error connecting to MongoDB:', err));
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("Error connecting to MongoDB:", err));
 
-
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to the Murder Mystery API' });
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to the Murder Mystery API" });
 });
 
 // Port from environment or default
