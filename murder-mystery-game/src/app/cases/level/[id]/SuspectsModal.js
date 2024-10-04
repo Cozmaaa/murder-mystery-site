@@ -3,7 +3,8 @@
 import SuspectsContent from "./suspectsContent";
 import { useState } from "react";
 
-const SuspectsModal = ({ onClose, suspects }) => {
+const SuspectsModal = ({ onClose, suspects,suspectChatHistories,setSuspectChatHistories }) => {
+
   return (
     <div
       className="modal-suspects-overlay"
@@ -15,7 +16,7 @@ const SuspectsModal = ({ onClose, suspects }) => {
         onClick={(e) => e.stopPropagation()}
         style={modalContentStyles}
       >
-        <SuspectsContent suspects={suspects}></SuspectsContent>
+        <SuspectsContent suspects={suspects} suspectChatHistories={suspectChatHistories} setSuspectChatHistories={setSuspectChatHistories}></SuspectsContent>
       </div>
     </div>
   );

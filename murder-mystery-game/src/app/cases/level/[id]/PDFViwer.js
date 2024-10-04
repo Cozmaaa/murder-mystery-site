@@ -1,3 +1,7 @@
+/*
+This is the renderer that open the pdf file from the frontend ./public folder
+*/
+
 "use client";
 
 import { useState, useEffect } from "react";

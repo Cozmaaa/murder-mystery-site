@@ -1,3 +1,8 @@
+/*
+This file is the modal of the PDF viewer of the documents
+It also contains zoom in and zoom out features for the pdf 
+*/
+
 "use client";
 
 import PDFViewer from "./PDFViwer";

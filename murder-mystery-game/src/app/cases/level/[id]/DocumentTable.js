@@ -1,3 +1,9 @@
+/*
+This file does the fetching for getting the documents on the table
+Also does the opening of the modal when clicking on the image
+*/
+
+
 'use client';
 import { useEffect, useState } from 'react';
 import Draggable from 'react-draggable';

@@ -1,38 +1,77 @@
+/*
+This file contain the ChatWindow component that represents the chat window where the user can talk to the suspect
+And it also contains the clicking on a suspect's image and opening the chat 
+Also it does the logic for the user 
+ */
+
 "use client";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 // ChatWindow Component
-const ChatWindow = ({ suspect, chatHistory, inputText, setInputText, handleSubmit, onClose }) => (
-  <div style={styles.chatWindow}>
-    <h3>Chat with {suspect.name}</h3>
-    <div style={styles.chatMessages}>
-      {chatHistory.map((message, index) => (
-        <div key={index} style={message.role === 'user' ? styles.userMessage : styles.assistantMessage}>
-          <strong>{message.role === 'user' ? 'You' : suspect.name}:</strong> {message.content}
-        </div>
-      ))}
+const ChatWindow = ({
+  suspect,
+  chatHistory,
+  inputText,
+  setInputText,
+  handleSubmit,
+  onClose,
+}) => {
+  const messagesEndRef = React.useRef(null);
+  const scrollToBotton = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(scrollToBotton, [chatHistory]);
+
+  return (
+    <div style={styles.chatWindow}>
+      <h3>Chat with {suspect.name}</h3>
+      <div style={styles.chatMessages}>
+        {chatHistory.map((message, index) => (
+          <div
+            key={index}
+            style={
+              message.role === "user"
+                ? styles.userMessage
+                : styles.assistantMessage
+            }
+          >
+            <strong>{message.role === "user" ? "You" : suspect.name}:</strong>{" "}
+            {message.content}
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+      <form onSubmit={handleSubmit} style={styles.chatForm}>
+        <input
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          style={styles.chatInput}
+          placeholder="Type a message..."
+        />
+        <button type="submit" style={styles.chatButton}>
+          Send
+        </button>
+      </form>
+      <button onClick={onClose} style={styles.closeChatButton}>
+        Close Chat
+      </button>
     </div>
-    <form onSubmit={handleSubmit} style={styles.chatForm}>
-      <input
-        type="text"
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        style={styles.chatInput}
-        placeholder="Type a message..."
-      />
-      <button type="submit" style={styles.chatButton}>Send</button>
-    </form>
-    <button onClick={onClose} style={styles.closeChatButton}>Close Chat</button>
-  </div>
-);
+  );
+};
 
 // SuspectsContent Component
-function SuspectsContent({ suspects }) {
+function SuspectsContent({
+  suspects,
+  suspectChatHistories,
+  setSuspectChatHistories,
+}) {
   const [selectedSuspect, setSelectedSuspect] = useState(null); // Track selected suspect
   const [inputText, setInputText] = useState(""); // Track user input
-  const [chatHistory, setChatHistory] = useState([]); // Track chat history
+
 
   // Handle clicking on suspect to open chat
   const handleSuspectClick = (suspect) => {
@@ -49,21 +88,36 @@ function SuspectsContent({ suspects }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Add the user's message to the chat history
-    const newChatHistory = [...chatHistory, { role: "user", content: inputText }];
-    setChatHistory(newChatHistory);
+    const currentHistory = suspectChatHistories[selectedSuspect.name] || [];
+
+    const newMessage = { role: "user", content: inputText };
+    const updatedHistory = [...currentHistory, newMessage];
+
+    setSuspectChatHistories((prev) => ({
+      ...prev,
+      [selectedSuspect.name]: updatedHistory,
+    }));
+
+
 
     try {
-      const response = await axios.post('http://localhost:5000/api/response/generate-suspect-response', {
-        userId: 'test',
-        suspectName: selectedSuspect.name,
-        text: inputText,
-        prompt: selectedSuspect.prompt,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/response/generate-suspect-response",
+        {
+          userId: "test",
+          suspectName: selectedSuspect.name,
+          text: inputText,
+          prompt: selectedSuspect.prompt,
+        }
+      );
 
-      // Add assistant's response to the chat history
-      const assistantResponse = response.data.response;
-      setChatHistory([...newChatHistory, { role: "assistant", content: assistantResponse }]);
+      const assistantResponse = { role: "assistant", content: response.data.response };
+
+      setSuspectChatHistories((prev) => ({
+        ...prev,
+        [selectedSuspect.name]: [...prev[selectedSuspect.name], assistantResponse],
+      }));
+
       setInputText(""); // Clear input after sending
     } catch (error) {
       console.error("Error generating suspect response:", error);
@@ -94,7 +148,7 @@ function SuspectsContent({ suspects }) {
       {selectedSuspect && (
         <ChatWindow
           suspect={selectedSuspect}
-          chatHistory={chatHistory}
+          chatHistory={suspectChatHistories[selectedSuspect.name]||[]}
           inputText={inputText}
           setInputText={setInputText}
           handleSubmit={handleSubmit}
@@ -131,23 +185,31 @@ const styles = {
   },
   chatWindow: {
     position: "fixed",
-    bottom: "10px",
-    right: "10px",
+    justifyContent: "center",
+    alignItems: "center",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     backgroundColor: "white",
     border: "1px solid #ccc",
     padding: "20px",
     borderRadius: "8px",
-    width: "300px",
+    width: "55%", // Adjust width as needed
+    height: "55%", // Adjust height as needed
+    display: "flex",
+    flexDirection: "column",
     zIndex: 100,
   },
+
   chatMessages: {
-    minHeight: "150px",
+    minHeight: "20%",
     marginBottom: "10px",
     backgroundColor: "#f1f1f1",
     padding: "10px",
     borderRadius: "5px",
     overflowY: "auto",
     maxHeight: "200px",
+    width: "60%",
   },
   userMessage: {
     backgroundColor: "#d1e7dd",
@@ -182,6 +244,7 @@ const styles = {
   },
   closeChatButton: {
     marginTop: "10px",
+    width: "10%",
     backgroundColor: "#dc3545",
     color: "white",
     padding: "5px 10px",

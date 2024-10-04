@@ -1,3 +1,9 @@
+/* 
+This is the main file for the page and it includes the Suspects button that opens the suspectsModal
+And it also contains DocumentsTable which is every report/document that is stored in th DB
+*/
+
+
 "use client";
 import { useRouter, useParams } from "next/navigation";
 import DocumentsTable from "./DocumentTable";
