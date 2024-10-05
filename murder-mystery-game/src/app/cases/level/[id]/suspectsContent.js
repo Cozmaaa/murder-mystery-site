@@ -18,6 +18,8 @@ const ChatWindow = ({
   handleSubmit,
   onClose,
 }) => {
+
+  //This thing is being done so that when a message is being send the chat window gets scrolled down
   const messagesEndRef = React.useRef(null);
   const scrollToBotton = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -69,17 +71,14 @@ function SuspectsContent({
   suspectChatHistories,
   setSuspectChatHistories,
 }) {
-  const [selectedSuspect, setSelectedSuspect] = useState(null); // Track selected suspect
+  const [selectedSuspect, setSelectedSuspect] = useState(null); 
   const [inputText, setInputText] = useState(""); // Track user input
 
 
-  // Handle clicking on suspect to open chat
   const handleSuspectClick = (suspect) => {
     setSelectedSuspect(suspect);
-    console.log(suspect);
   };
 
-  // Handle closing chat
   const closeChat = () => {
     setSelectedSuspect(null);
   };
@@ -98,8 +97,6 @@ function SuspectsContent({
       [selectedSuspect.name]: updatedHistory,
     }));
 
-
-
     try {
       const response = await axios.post(
         "http://localhost:5000/api/response/generate-suspect-response",
@@ -111,11 +108,17 @@ function SuspectsContent({
         }
       );
 
-      const assistantResponse = { role: "assistant", content: response.data.response };
+      const assistantResponse = {
+        role: "assistant",
+        content: response.data.response,
+      };
 
       setSuspectChatHistories((prev) => ({
         ...prev,
-        [selectedSuspect.name]: [...prev[selectedSuspect.name], assistantResponse],
+        [selectedSuspect.name]: [
+          ...prev[selectedSuspect.name],
+          assistantResponse,
+        ],
       }));
 
       setInputText(""); // Clear input after sending
@@ -148,7 +151,7 @@ function SuspectsContent({
       {selectedSuspect && (
         <ChatWindow
           suspect={selectedSuspect}
-          chatHistory={suspectChatHistories[selectedSuspect.name]||[]}
+          chatHistory={suspectChatHistories[selectedSuspect.name] || []}
           inputText={inputText}
           setInputText={setInputText}
           handleSubmit={handleSubmit}

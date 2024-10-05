@@ -61,11 +61,19 @@ const DocumentsTable = ({ level }) => {
             <img
               src={doc.imageUrl}
               alt={doc.name}
-              style={{ maxWidth: '200px', maxHeight: '200px' }}
+              style={{ maxWidth: '200px', maxHeight: '200px', border:'1px solid white',boxShadow:'0 4px 8px rgba(0,0,0,0.5)'}}
               onDragStart={preventDragHandler}
               onDoubleClick={() => handleDoubleClick(doc)} 
             />
-            <p>{doc.name}</p>
+            <p style={{ 
+          color: 'white', // Text color to stand out on dark background
+          textShadow: '2px 2px 4px rgba(0, 0, 0, 0.7)', // Adds a shadow for better readability
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional background behind text
+          padding: '5px', // Padding for better appearance
+          borderRadius: '5px', // Rounded corners for text background
+          marginTop: '8px', // Adds some space between the image and the text
+          textAlign: 'center' // Centers the text below the image
+        }}>{doc.name}</p>
           </div>
         </Draggable>
       ))}

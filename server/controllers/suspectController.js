@@ -2,14 +2,14 @@ const Suspect = require("../models/suspectModel");
 
 exports.createSuspect = async (req, res) => {
   try {
-    const { name, faceImage, level, prompt } = req.body;
+    const { name, faceImage, level, isGuilty,prompt, } = req.body;
 
     const existingSuspect = await Suspect.findOne({ name: name, level: level });
     if (existingSuspect) {
       return res.status(400).send("This suspect already exists");
     }
 
-    const newSuspect = new Suspect({ name, faceImage, level, prompt });
+    const newSuspect = new Suspect({ name, faceImage, level, isGuilty,prompt });
     await newSuspect.save();
 
     res.status(201).json(newSuspect);

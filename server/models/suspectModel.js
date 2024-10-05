@@ -13,6 +13,10 @@ const suspectSchema = new mongoose.Schema({
         type:Number,
         required:true,
     },
+    isGuilty:{
+        type:Boolean,
+        required:true,
+    },
     prompt:{
         type:String,
         required:true,

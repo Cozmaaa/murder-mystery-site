@@ -9,6 +9,7 @@ import { useRouter, useParams } from "next/navigation";
 import DocumentsTable from "./DocumentTable";
 import Draggable from "react-draggable";
 import SuspectsButton from "./SuspectsButton";
+import SuspectsArrestButton from "./SuspectsArrestButton";
 
 const LevelPage = () => {
   const params = useParams();
@@ -22,12 +23,13 @@ const LevelPage = () => {
     <div style={pageStyle}>
       <SuspectsButton level={parseInt(id)}></SuspectsButton>
       <DocumentsTable level={parseInt(id)} />
+      <SuspectsArrestButton level={parseInt(id)}></SuspectsArrestButton>
     </div>
   );
 };
 
 const pageStyle= {
-  backgroundImage: "url('/background.jpg')",
+  backgroundImage: "url(/1.webp)",
   backgroundSize:"cover",
   backgroundPosition:"center",
 }

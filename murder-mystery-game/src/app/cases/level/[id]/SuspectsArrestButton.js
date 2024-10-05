@@ -1,17 +1,12 @@
-/*
-This is the file where the fetching of suspects is being done and then passed 
-for the modal to be rendered for the user
- */
-
 "use client";
-import { useEffect, useState } from "react";
-import SuspectsModal from "./SuspectsModal"; // Import the modal
 
-const SuspectsButton = ({ level }) => {
+import { useEffect, useState } from "react";
+import SuspectsModal from "./SuspectsModal";
+
+const SuspectsArrestButton = ({ level }) => {
   const [suspects, setSuspects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [suspectChatHistories, setSuspectChatHistories] = useState({});
 
   useEffect(() => {
     const fetchSuspects = async () => {
@@ -35,7 +30,6 @@ const SuspectsButton = ({ level }) => {
   }
 
   const handleClick = () => {
-    console.log(suspects);
     setIsModalOpen(true);
   };
 
@@ -57,7 +51,7 @@ const SuspectsButton = ({ level }) => {
           }
           onClick={handleClick}
         >
-          Open suspect list
+          Arrest
         </button>
       </div>
 
@@ -66,9 +60,7 @@ const SuspectsButton = ({ level }) => {
           <SuspectsModal
             suspects={suspects}
             onClose={closeModal}
-            suspectChatHistories={suspectChatHistories}
-            setSuspectChatHistories={setSuspectChatHistories}
-            currentContent={'chatting'}
+            currentContent={'arrest'}
           />
         </div>
       )}
@@ -78,7 +70,7 @@ const SuspectsButton = ({ level }) => {
 
 const suspectsButtonStyles = {
   position: "fixed",
-  bottom: "20px", // Button at the bottom
+  top: "20px", // Button at the bottom
   left: "50%",
   transform: "translateX(-50%)", // Center horizontally
   zIndex: 9,
@@ -96,20 +88,6 @@ const buttonStyles = {
 };
 
 const buttonHoverStyles = {
-  backgroundColor: "#0056b3",
-};
-
-const modalOverlayStyles = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  width: "100vw",
-  height: "100vh",
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  zIndex: 10,
-};
-
-export default SuspectsButton;
+    backgroundColor: "#0056b3",
+  };
+export default SuspectsArrestButton;

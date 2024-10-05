@@ -1,9 +1,19 @@
 "use client";
 
 import SuspectsContent from "./suspectsContent";
+import SuspectArrestContent from "./SuspectArrestContent";
 import { useState } from "react";
 
-const SuspectsModal = ({ onClose, suspects,suspectChatHistories,setSuspectChatHistories }) => {
+const SuspectsModal = ({ onClose, suspects,suspectChatHistories,setSuspectChatHistories,currentContent }) => {
+
+  const renderModal = ()=>{
+    switch(currentContent){
+      case "chatting":
+        return(<SuspectsContent suspects={suspects} suspectChatHistories={suspectChatHistories} setSuspectChatHistories={setSuspectChatHistories}></SuspectsContent>);
+      case 'arrest':
+        return(<SuspectArrestContent suspects={suspects}></SuspectArrestContent>);
+    }
+  }
 
   return (
     <div
@@ -15,8 +25,8 @@ const SuspectsModal = ({ onClose, suspects,suspectChatHistories,setSuspectChatHi
         className="modal-suspects-content"
         onClick={(e) => e.stopPropagation()}
         style={modalContentStyles}
-      >
-        <SuspectsContent suspects={suspects} suspectChatHistories={suspectChatHistories} setSuspectChatHistories={setSuspectChatHistories}></SuspectsContent>
+      >       
+        {renderModal()}
       </div>
     </div>
   );
