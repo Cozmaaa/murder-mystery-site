@@ -61,7 +61,7 @@ const DocumentsTable = ({ level }) => {
             <img
               src={doc.imageUrl}
               alt={doc.name}
-              style={{ maxWidth: '200px', maxHeight: '200px', border:'1px solid white',boxShadow:'0 4px 8px rgba(0,0,0,0.5)'}}
+              style={{ maxWidth: '300px', maxHeight: '300px', border:'1px solid white',boxShadow:'0 4px 8px rgba(0,0,0,0.5)'}}
               onDragStart={preventDragHandler}
               onDoubleClick={() => handleDoubleClick(doc)} 
             />

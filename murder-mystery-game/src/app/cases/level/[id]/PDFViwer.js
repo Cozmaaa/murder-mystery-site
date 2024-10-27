@@ -50,9 +50,6 @@ function PDFViewer({ fileUrl,scale }) {
             );
           })}
       </Document>
-      <p>
-        Page {pageNumber} of {numPages}
-      </p>
     </div>
   );
 }
