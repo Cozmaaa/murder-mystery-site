@@ -1,4 +1,4 @@
-const OpenAI = require("openai");
+import OpenAI from "openai";
 require("dotenv").config();
 
 const openai = new OpenAI({
@@ -6,7 +6,17 @@ const openai = new OpenAI({
 });
 
 
-const handleOpenAiRequest = async (userId, suspectName,text, prompt, conversations) => {
+interface Message{
+  role:"system"|"user"|"assistant";
+  content:string|null;
+  name?:string;
+}
+
+interface Conversations{
+  [key:string]:Message[];
+}
+
+const handleOpenAiRequest = async (userId:string, suspectName:string,text:string, prompt:string, conversations:Conversations) => {
 
     const conversationKey = `${userId}-${suspectName}`;
   if (!conversations[conversationKey]) {
@@ -17,7 +27,7 @@ const handleOpenAiRequest = async (userId, suspectName,text, prompt, conversatio
 
   const stream = await openai.chat.completions.create({
     model: "gpt-4o-mini",
-    messages: conversations[conversationKey],
+    messages: conversations[conversationKey] as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
   });
 
   const responseContent = stream.choices[0].message.content;
@@ -26,4 +36,4 @@ const handleOpenAiRequest = async (userId, suspectName,text, prompt, conversatio
   return responseContent;
 };
 
-module.exports = { handleOpenAiRequest };
+export { handleOpenAiRequest };

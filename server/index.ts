@@ -1,12 +1,12 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const path = require("path");
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import bodyParser from "body-parser";
+import path from "path";
 require("dotenv").config();
-const documentRouter = require("./routes/documentRoutes");
-const suspectRouter = require("./routes/suspectRoutes");
-const suspectChattingRoutes = require("./routes/suspectChattingRoutes");
+import documentRouter from "./routes/documentRoutes";
+import suspectRouter from "./routes/suspectRoutes";
+import suspectChattingRoutes from "./routes/suspectChattingRoutes";
 
 const app = express();
 
@@ -18,6 +18,10 @@ app.use("/api/documents", documentRouter);
 app.use("/api/suspects", suspectRouter);
 app.use("/api/response", suspectChattingRoutes);
 app.use("/public", express.static(path.join(__dirname, "public")));
+
+if (!process.env.DATABASE_URI) {
+  throw new Error("DATABASE_URI is not defined in the environment variables");
+}
 
 mongoose
   .connect(process.env.DATABASE_URI)

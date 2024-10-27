@@ -1,6 +1,14 @@
-const mongoose = require('mongoose');
+import {Schema,model,Document} from 'mongoose';
 
-const suspectSchema = new mongoose.Schema({
+interface ISuspect extends Document{
+    name:string;
+    faceImage:string;
+    level:number;
+    isGuilty:boolean;
+    prompt:string;
+}
+
+const suspectSchema = new Schema<ISuspect>({
     name:{
         type:String,
         require:true,
@@ -23,6 +31,6 @@ const suspectSchema = new mongoose.Schema({
     }
 })
 
-const Suspect = mongoose.model('Suspect',suspectSchema);
+const Suspect = model<ISuspect>('Suspect',suspectSchema);
 
-module.exports=Suspect;
+export default Suspect;

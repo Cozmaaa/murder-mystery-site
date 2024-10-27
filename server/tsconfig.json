@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "strict": true,
+      "esModuleInterop": true,
+      "moduleResolution": "Node",
+      "skipLibCheck": true,
+      "outDir": "./dist",
+    },
+    "include": ["src/**/*.ts", "controllers/**/*.ts", "models/**/*.ts", "public/**/*.ts", "routes/**/*.ts", "services/**/*.ts"],
+    "exclude": ["node_modules", "**/*.spec.ts"]
+}
