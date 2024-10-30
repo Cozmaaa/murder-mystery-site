@@ -10,13 +10,24 @@ import Draggable from 'react-draggable';
 import dynamic from 'next/dynamic';
 import Modal from './Modal'; // Import the modal component
 
+interface DocumentsTableProp{
+  level:number;
+}
+
+interface Document {
+  _id:string;
+  imageUrl:string;
+  name:string;
+  imageName:string;
+}
+
 const PDFViewer = dynamic(() => import('./PDFViwer'), { ssr: false });
 
-const DocumentsTable = ({ level }) => {
-  const [documents, setDocuments] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedDoc, setSelectedDoc] = useState(null); // State for the selected document
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+const DocumentsTable:React.FC<DocumentsTableProp> = ({ level }) => {
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedDoc, setSelectedDoc] = useState<Document|null>(null); // State for the selected document
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // State for modal visibility
 
   useEffect(() => {
     const fetchDocuments = async () => {
@@ -38,11 +49,11 @@ const DocumentsTable = ({ level }) => {
     return <div>Loading...</div>;
   }
 
-  const preventDragHandler = (e) => {
+  const preventDragHandler = (e:React.FormEvent) => {
     e.preventDefault();
   };
 
-  const handleDoubleClick = (doc) => {
+  const handleDoubleClick = (doc:Document) => {
     setSelectedDoc(doc);
     setIsModalOpen(true); 
   };
@@ -78,9 +89,9 @@ const DocumentsTable = ({ level }) => {
         </Draggable>
       ))}
 
-      {isModalOpen && (
+      {isModalOpen &&  (
         <Modal onClose={closeModal} fileUrl={"/"+selectedDoc?.imageName+'.pdf'}>
-          <PDFViewer fileUrl={"/"+selectedDoc?.imageName+'.pdf'} />
+          <PDFViewer fileUrl={"/"+selectedDoc?.imageName+'.pdf'} scale={1.2}/>
         </Modal>
       )}
     </div>

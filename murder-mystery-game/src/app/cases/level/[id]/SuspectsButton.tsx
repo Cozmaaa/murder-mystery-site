@@ -7,7 +7,11 @@ for the modal to be rendered for the user
 import { useEffect, useState } from "react";
 import SuspectsModal from "./SuspectsModal"; // Import the modal
 
-const SuspectsButton = ({ level }) => {
+interface SuspectsButtonProps{
+  level:number;
+}
+
+const SuspectsButton:React.FC<SuspectsButtonProps>= ({ level }) => {
   const [suspects, setSuspects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,11 +53,11 @@ const SuspectsButton = ({ level }) => {
       <div style={suspectsButtonStyles}>
         <button
           style={buttonStyles}
-          onMouseEnter={(e) =>
-            (e.target.style.backgroundColor = buttonHoverStyles.backgroundColor)
+          onMouseEnter={(e ) =>
+            ((e.target as HTMLButtonElement).style.backgroundColor = buttonHoverStyles.backgroundColor!)
           }
           onMouseLeave={(e) =>
-            (e.target.style.backgroundColor = buttonStyles.backgroundColor)
+            ((e.target as HTMLButtonElement).style.backgroundColor = buttonStyles.backgroundColor!)
           }
           onClick={handleClick}
         >
@@ -76,7 +80,7 @@ const SuspectsButton = ({ level }) => {
   );
 };
 
-const suspectsButtonStyles = {
+const suspectsButtonStyles:React.CSSProperties = {
   position: "fixed",
   bottom: "20px", // Button at the bottom
   left: "50%",
@@ -84,7 +88,7 @@ const suspectsButtonStyles = {
   zIndex: 9,
 };
 
-const buttonStyles = {
+const buttonStyles:React.CSSProperties = {
   backgroundColor: "#007bff",
   color: "white",
   fontSize: "18px",
@@ -95,11 +99,11 @@ const buttonStyles = {
   transition: "background-color 0.3s ease",
 };
 
-const buttonHoverStyles = {
+const buttonHoverStyles:React.CSSProperties = {
   backgroundColor: "#0056b3",
 };
 
-const modalOverlayStyles = {
+const modalOverlayStyles:React.CSSProperties = {
   position: "fixed",
   top: 0,
   left: 0,

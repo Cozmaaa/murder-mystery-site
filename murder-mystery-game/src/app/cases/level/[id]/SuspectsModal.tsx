@@ -4,7 +4,15 @@ import SuspectsContent from "./suspectsContent";
 import SuspectArrestContent from "./SuspectArrestContent";
 import { useState } from "react";
 
-const SuspectsModal = ({ onClose, suspects,suspectChatHistories,setSuspectChatHistories,currentContent }) => {
+interface SuspectsModalProps {
+  suspects: any[];
+  onClose: () => void;
+  currentContent: string;
+  suspectChatHistories?: any;
+  setSuspectChatHistories?: any;
+}
+
+const SuspectsModal:React.FC<SuspectsModalProps> = ({ onClose, suspects,suspectChatHistories,setSuspectChatHistories,currentContent }) => {
 
   const renderModal = ()=>{
     switch(currentContent){
@@ -32,7 +40,7 @@ const SuspectsModal = ({ onClose, suspects,suspectChatHistories,setSuspectChatHi
   );
 };
 
-const modalOverlayStyles = {
+const modalOverlayStyles:React.CSSProperties = {
   position: "fixed",
   top: 0,
   left: 0,
@@ -45,7 +53,7 @@ const modalOverlayStyles = {
   zIndex: 10, // Ensures modal is above other content
 };
 
-const modalContentStyles = {
+const modalContentStyles:React.CSSProperties = {
   backgroundColor: "#fff",
   padding: "20px",
   borderRadius: "8px",
@@ -55,7 +63,7 @@ const modalContentStyles = {
   position: "relative", // Ensure close button positions correctly
 };
 
-const closeButtonStyle = {
+const closeButtonStyle:React.CSSProperties = {
   position: "absolute",
   top: "10px",
   right: "10px",

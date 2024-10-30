@@ -8,15 +8,30 @@ It also contains zoom in and zoom out features for the pdf
 import PDFViewer from "./PDFViwer";
 import { useState } from "react";
 
-const Modal = ({ onClose, fileUrl }) => {
-  const [scale, setScale] = useState(1);
+interface ModalProps {
+  onClose: () => void;
+  fileUrl: string;
+  children:React.ReactNode
+}
 
-  const onZoomIn = (e) => {
+const Modal: React.FC<ModalProps> = ({ onClose, fileUrl }) => {
+  const [scale, setScale] = useState(1.3);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const onZoomIn = (e: React.FormEvent) => {
     e.stopPropagation();
     setScale((prevScale) => prevScale + 0.1);
   };
 
-  const onZoomOut = (e) => {
+  const onZoomOut = (e: React.FormEvent) => {
     e.stopPropagation();
     setScale((prevScale) => Math.max(prevScale - 0.1, 0.5));
   };
@@ -37,10 +52,26 @@ const Modal = ({ onClose, fileUrl }) => {
 
       {/* Zoom controls fixed to the left of the screen */}
       <div style={zoomControlsContainerStyles}>
-        <button onClick={onZoomIn} style={zoomButtonStyles}>
+        <button
+          onClick={onZoomIn}
+          style={{
+            ...zoomButtonStyles,
+            backgroundColor: isHovered ? "#0056b3" : "#fff",
+          }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           +
         </button>
-        <button onClick={onZoomOut} style={zoomButtonStyles}>
+        <button
+          onClick={onZoomOut}
+          style={{
+            ...zoomButtonStyles,
+            backgroundColor: isHovered ? "#0056b3" : "#fff",
+          }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           -
         </button>
       </div>
@@ -49,7 +80,7 @@ const Modal = ({ onClose, fileUrl }) => {
 };
 
 // Styles for modal and buttons
-const modalOverlayStyles = {
+const modalOverlayStyles: React.CSSProperties = {
   position: "fixed",
   top: 0,
   left: 0,
@@ -62,7 +93,7 @@ const modalOverlayStyles = {
   zIndex: 10, // Ensures modal is above other content
 };
 
-const modalContentStyles = {
+const modalContentStyles: React.CSSProperties = {
   backgroundColor: "#fff",
   padding: "20px",
   borderRadius: "8px",
@@ -72,7 +103,7 @@ const modalContentStyles = {
   position: "relative", // Ensure close button positions correctly
 };
 
-const closeButtonStyles = {
+const closeButtonStyles: React.CSSProperties = {
   position: "absolute",
   top: "10px",
   right: "10px",
@@ -84,7 +115,7 @@ const closeButtonStyles = {
   zIndex: 100,
 };
 
-const zoomControlsContainerStyles = {
+const zoomControlsContainerStyles: React.CSSProperties = {
   position: "fixed",
   top: "50%",
   left: "20px", // Fixed to the left side of the screen
@@ -95,7 +126,7 @@ const zoomControlsContainerStyles = {
   zIndex: 100, // Make sure buttons are above other elements
 };
 
-const zoomButtonStyles = {
+const zoomButtonStyles: React.CSSProperties = {
   width: "40px",
   height: "40px",
   background: "#fff",
@@ -108,10 +139,6 @@ const zoomButtonStyles = {
   cursor: "pointer",
   transition: "background-color 0.3s ease",
   zIndex: 100, // Ensure buttons are above modal
-};
-
-zoomButtonStyles[":hover"] = {
-  backgroundColor: "#0056b3",
 };
 
 export default Modal;

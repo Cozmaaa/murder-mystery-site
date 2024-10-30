@@ -11,11 +11,11 @@ import Draggable from "react-draggable";
 import SuspectsButton from "./SuspectsButton";
 import SuspectsArrestButton from "./SuspectsArrestButton";
 
-const LevelPage = () => {
+const LevelPage:React.FC = () => {
   const params = useParams();
   const { id } = params;
 
-  if (!id) {
+  if (!id||Array.isArray(id)) {
     return <div>Loading...</div>;
   }
 

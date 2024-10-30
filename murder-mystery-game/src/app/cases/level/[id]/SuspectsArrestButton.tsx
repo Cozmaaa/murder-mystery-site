@@ -3,10 +3,25 @@
 import { useEffect, useState } from "react";
 import SuspectsModal from "./SuspectsModal";
 
-const SuspectsArrestButton = ({ level }) => {
-  const [suspects, setSuspects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+interface SuspectsArrestButtonProps {
+  level: number;
+}
+
+interface SuspectsModalProps {
+  suspects: any[];
+  onClose: () => void;
+  currentContent: string;
+  suspectChatHistories?: any;
+  setSuspectChatHistories?: any;
+}
+
+const SuspectsArrestButton: React.FC<SuspectsArrestButtonProps> = ({
+  level,
+}) => {
+  const [suspects, setSuspects] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [suspectChatHistories, setSuspectChatHistories] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchSuspects = async () => {
@@ -44,10 +59,12 @@ const SuspectsArrestButton = ({ level }) => {
         <button
           style={buttonStyles}
           onMouseEnter={(e) =>
-            (e.target.style.backgroundColor = buttonHoverStyles.backgroundColor)
+            ((e.target as HTMLButtonElement).style.backgroundColor =
+              buttonHoverStyles.backgroundColor!)
           }
           onMouseLeave={(e) =>
-            (e.target.style.backgroundColor = buttonStyles.backgroundColor)
+            ((e.target as HTMLButtonElement).style.backgroundColor =
+              buttonStyles.backgroundColor!)
           }
           onClick={handleClick}
         >
@@ -60,7 +77,9 @@ const SuspectsArrestButton = ({ level }) => {
           <SuspectsModal
             suspects={suspects}
             onClose={closeModal}
-            currentContent={'arrest'}
+            currentContent="arrest"
+            suspectChatHistories={suspectChatHistories}
+            setSuspectChatHistories={setSuspectChatHistories}
           />
         </div>
       )}
@@ -68,7 +87,7 @@ const SuspectsArrestButton = ({ level }) => {
   );
 };
 
-const suspectsButtonStyles = {
+const suspectsButtonStyles: React.CSSProperties = {
   position: "fixed",
   top: "20px", // Button at the bottom
   left: "50%",
@@ -76,7 +95,7 @@ const suspectsButtonStyles = {
   zIndex: 9,
 };
 
-const buttonStyles = {
+const buttonStyles: React.CSSProperties = {
   backgroundColor: "#007bff",
   color: "white",
   fontSize: "18px",
@@ -87,7 +106,8 @@ const buttonStyles = {
   transition: "background-color 0.3s ease",
 };
 
-const buttonHoverStyles = {
-    backgroundColor: "#0056b3",
-  };
+const buttonHoverStyles: React.CSSProperties = {
+  backgroundColor: "#0056b3",
+};
+
 export default SuspectsArrestButton;

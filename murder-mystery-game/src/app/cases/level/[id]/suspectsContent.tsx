@@ -9,8 +9,17 @@ Also it does the logic for the user
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+interface ChatWindowProps{
+  suspect:{name:string};
+  chatHistory:any[];
+  inputText:string;
+  setInputText:(text:string)=>void;
+  handleSubmit:(e:React.FormEvent)=>void;
+  onClose:()=>void;
+}
+
 // ChatWindow Component
-const ChatWindow = ({
+const ChatWindow:React.FC<ChatWindowProps> = ({
   suspect,
   chatHistory,
   inputText,
@@ -20,7 +29,7 @@ const ChatWindow = ({
 }) => {
 
   //This thing is being done so that when a message is being send the chat window gets scrolled down
-  const messagesEndRef = React.useRef(null);
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
   const scrollToBotton = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -65,17 +74,29 @@ const ChatWindow = ({
   );
 };
 
+interface Suspect {
+  name: string;
+  prompt:string;
+  imageUrl:string;
+}
+
+interface SuspectsContentProps {
+  suspects: Suspect[];
+  suspectChatHistories: Record<string, any[]>;
+  setSuspectChatHistories: React.Dispatch<React.SetStateAction<Record<string, any[]>>>;
+}
+
+
 // SuspectsContent Component
-function SuspectsContent({
+const SuspectsContent: React.FC<SuspectsContentProps> = ({
   suspects,
   suspectChatHistories,
   setSuspectChatHistories,
-}) {
-  const [selectedSuspect, setSelectedSuspect] = useState(null); 
-  const [inputText, setInputText] = useState(""); // Track user input
+}) => {
+  const [selectedSuspect, setSelectedSuspect] = useState<Suspect | null>(null);
+  const [inputText, setInputText] = useState<string>(""); // Track user input
 
-
-  const handleSuspectClick = (suspect) => {
+  const handleSuspectClick = (suspect: Suspect) => {
     setSelectedSuspect(suspect);
   };
 
@@ -84,9 +105,10 @@ function SuspectsContent({
   };
 
   // Handle form submission to send message
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:React.FormEvent) => {
     e.preventDefault();
 
+    if(!selectedSuspect) return;
     const currentHistory = suspectChatHistories[selectedSuspect.name] || [];
 
     const newMessage = { role: "user", content: inputText };
@@ -166,7 +188,7 @@ function SuspectsContent({
 const styles = {
   suspectsContainer: {
     padding: "20px",
-  },
+  }as React.CSSProperties,
   suspectsList: {
     listStyle: "none",
     display: "flex",
@@ -175,17 +197,17 @@ const styles = {
     padding: "0",
     margin: "0",
     justifyContent: "center",
-  },
+  }as React.CSSProperties,
   suspectsListItem: {
     flex: "1 1 100px",
     textAlign: "center",
     cursor: "pointer",
-  },
+  }as React.CSSProperties,
   suspectsListImg: {
     maxWidth: "200px",
     height: "auto",
     borderRadius: "8px",
-  },
+  }as React.CSSProperties,
   chatWindow: {
     position: "fixed",
     justifyContent: "center",
@@ -202,7 +224,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     zIndex: 100,
-  },
+  }as React.CSSProperties,
 
   chatMessages: {
     minHeight: "20%",
@@ -213,30 +235,30 @@ const styles = {
     overflowY: "auto",
     maxHeight: "200px",
     width: "60%",
-  },
+  }as React.CSSProperties,
   userMessage: {
     backgroundColor: "#d1e7dd",
     padding: "5px 10px",
     borderRadius: "5px",
     marginBottom: "5px",
-  },
+  }as React.CSSProperties,
   assistantMessage: {
     backgroundColor: "#f8d7da",
     padding: "5px 10px",
     borderRadius: "5px",
     marginBottom: "5px",
-  },
+  }as React.CSSProperties,
   chatForm: {
     display: "flex",
     justifyContent: "space-between",
-  },
+  }as React.CSSProperties,
   chatInput: {
     flex: 1,
     padding: "10px",
     borderRadius: "4px",
     border: "1px solid #ccc",
     marginRight: "10px",
-  },
+  }as React.CSSProperties,
   chatButton: {
     padding: "10px 20px",
     backgroundColor: "#007bff",
@@ -244,7 +266,7 @@ const styles = {
     border: "none",
     borderRadius: "4px",
     cursor: "pointer",
-  },
+  }as React.CSSProperties,
   closeChatButton: {
     marginTop: "10px",
     width: "10%",
@@ -254,7 +276,7 @@ const styles = {
     border: "none",
     borderRadius: "4px",
     cursor: "pointer",
-  },
+  }as React.CSSProperties,
 };
 
 export default SuspectsContent;

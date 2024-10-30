@@ -4,9 +4,21 @@
 
 import { useState,useEffect } from "react";
 
-const SuspectArrestContent = ({suspects})=>{
-    const [gameState, setGameState] = useState(null);
-    const handleSuspectClick= (suspect)=>{
+interface Suspect {
+  isGuilty: boolean;
+  name:string;
+  imageUrl:string;
+}
+
+interface SuspectArrestProp{
+    suspects:Suspect[];
+}
+
+type GameState= 'won'|'lose'|null;
+
+const SuspectArrestContent:React.FC<SuspectArrestProp> = ({suspects})=>{
+    const [gameState, setGameState] = useState<GameState>(null);
+    const handleSuspectClick= (suspect:Suspect)=>{
         console.log("MIAU");
         if(suspect.isGuilty){
             setGameState('won');
@@ -58,7 +70,7 @@ const SuspectArrestContent = ({suspects})=>{
 const styles = {
     suspectsContainer: {
       padding: "20px",
-    },
+    } as React.CSSProperties,
     suspectsList: {
       listStyle: "none",
       display: "flex",
@@ -67,17 +79,17 @@ const styles = {
       padding: "0",
       margin: "0",
       justifyContent: "center",
-    },
+    }as React.CSSProperties,
     suspectsListItem: {
       flex: "1 1 100px",
       textAlign: "center",
       cursor: "pointer",
-    },
+    }as React.CSSProperties,
     suspectsListImg: {
       maxWidth: "200px",
       height: "auto",
       borderRadius: "8px",
-    },
+    }as React.CSSProperties,
     chatWindow: {
       position: "fixed",
       justifyContent: "center",
@@ -94,7 +106,7 @@ const styles = {
       display: "flex",
       flexDirection: "column",
       zIndex: 100,
-    },
+    }as React.CSSProperties,
   
     chatMessages: {
       minHeight: "20%",
@@ -105,30 +117,30 @@ const styles = {
       overflowY: "auto",
       maxHeight: "200px",
       width: "60%",
-    },
+    }as React.CSSProperties,
     userMessage: {
       backgroundColor: "#d1e7dd",
       padding: "5px 10px",
       borderRadius: "5px",
       marginBottom: "5px",
-    },
+    }as React.CSSProperties,
     assistantMessage: {
       backgroundColor: "#f8d7da",
       padding: "5px 10px",
       borderRadius: "5px",
       marginBottom: "5px",
-    },
+    }as React.CSSProperties,
     chatForm: {
       display: "flex",
       justifyContent: "space-between",
-    },
+    }as React.CSSProperties,
     chatInput: {
       flex: 1,
       padding: "10px",
       borderRadius: "4px",
       border: "1px solid #ccc",
       marginRight: "10px",
-    },
+    }as React.CSSProperties,
     chatButton: {
       padding: "10px 20px",
       backgroundColor: "#007bff",
@@ -136,7 +148,7 @@ const styles = {
       border: "none",
       borderRadius: "4px",
       cursor: "pointer",
-    },
+    }as React.CSSProperties,
     closeChatButton: {
       marginTop: "10px",
       width: "10%",
@@ -146,7 +158,7 @@ const styles = {
       border: "none",
       borderRadius: "4px",
       cursor: "pointer",
-    },
+    }as React.CSSProperties,
     fullScreenMessage: {
         position: "fixed",
         top: 0,
@@ -161,7 +173,7 @@ const styles = {
         fontSize: "48px",
         fontWeight: "bold",
         zIndex: 100, // Make sure it's on top of everything else
-      },
+      }as React.CSSProperties,
   };
 
   export default SuspectArrestContent;
