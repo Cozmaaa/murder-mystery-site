@@ -57,6 +57,18 @@ export const getDocument = async (
       }.webp`,
     }));
 
+
+    for(let i =0 ;i<modifiedDocuments.length;i++){
+      if(modifiedDocuments[i].imageName==='initialFile'){
+        let buffer = modifiedDocuments[0];
+        modifiedDocuments[0]=modifiedDocuments[i];
+        modifiedDocuments[i]=buffer;
+        break;
+      }
+    }
+
+
+
     res.json(modifiedDocuments);
   } catch (error) {
     res.status(500).send("Server error while fetching Document");

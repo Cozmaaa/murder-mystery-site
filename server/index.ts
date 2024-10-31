@@ -7,6 +7,7 @@ require("dotenv").config();
 import documentRouter from "./routes/documentRoutes";
 import suspectRouter from "./routes/suspectRoutes";
 import suspectChattingRoutes from "./routes/suspectChattingRoutes";
+import caseRoutes from "./routes/caseRoutes";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 app.use("/api/documents", documentRouter);
 app.use("/api/suspects", suspectRouter);
 app.use("/api/response", suspectChattingRoutes);
+app.use("/api/case/",caseRoutes);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 if (!process.env.DATABASE_URI) {
