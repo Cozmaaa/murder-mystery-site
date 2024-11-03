@@ -3,22 +3,43 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 import path from "path";
+import session from "express-session";
+import passport from "passport";
 require("dotenv").config();
+import "./config/passport";
 import documentRouter from "./routes/documentRoutes";
 import suspectRouter from "./routes/suspectRoutes";
 import suspectChattingRoutes from "./routes/suspectChattingRoutes";
 import caseRoutes from "./routes/caseRoutes";
+import authRoutes from "./routes/authRoutes";
 
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "defaultParola",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/documents", documentRouter);
 app.use("/api/suspects", suspectRouter);
 app.use("/api/response", suspectChattingRoutes);
-app.use("/api/case/",caseRoutes);
+app.use("/api/case/", caseRoutes);
+app.use("/api/user/", authRoutes);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 if (!process.env.DATABASE_URI) {

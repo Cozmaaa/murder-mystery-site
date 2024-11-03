@@ -9,17 +9,21 @@ interface CaseProps {
   imageName: string;
   level: number;
   description: string;
-  imageUrl:string;
+  imageUrl: string;
 }
 
 const MainMenu: React.FC = () => {
   const router = useRouter();
   const [cases, setCases] = useState<CaseProps[]>([]);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
 
   useEffect(() => {
     const fetchCases = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/case/');
+        const response = await fetch("http://localhost:5000/api/case/",{
+          credentials:"include",
+        });
         const data = await response.json();
         setCases(data);
       } catch (error) {
@@ -35,7 +39,12 @@ const MainMenu: React.FC = () => {
         <div style={casesContainerStyle}>
           {cases.map((caseItem, index) => (
             <Link key={index} href={`/cases/level/${caseItem.level}`} passHref>
-              <div style={caseStyle}>
+              <div
+                style={{...caseStyle,boxShadow:hoveredIndex===index?"0 0 30px 7px #48abe0":"none"}}
+                onMouseOver={()=>setHoveredIndex(index)}
+                onMouseOut={()=>setHoveredIndex(null)}
+              >
+
                 <div style={paperStyle}>
                   <img
                     src={caseItem.imageUrl}
@@ -44,6 +53,11 @@ const MainMenu: React.FC = () => {
                   />
                   <p style={nameStyle}>{caseItem.name}</p>
                 </div>
+                {hoveredIndex === index && (
+                  <div style={descriptionStyle}>
+                    <p>{caseItem.description}</p>
+                  </div>
+                )}
               </div>
             </Link>
           ))}
@@ -86,6 +100,8 @@ let casesContainerStyle: React.CSSProperties = {
 let caseStyle: React.CSSProperties = {
   width: "150px",
   cursor: "pointer",
+  position: "relative", // Ensure the description is positioned correctly
+  marginBottom: "50px",
 };
 
 let paperStyle: React.CSSProperties = {
@@ -107,6 +123,19 @@ let nameStyle: React.CSSProperties = {
   fontWeight: "bold",
   textAlign: "center",
   color: "#333",
+};
+
+let descriptionStyle: React.CSSProperties = {
+  position: "absolute",
+  backgroundColor: "rgba(0,0,0,0.5)",
+  width: "150px",
+  borderRadius: "5px",
+  top: "100%", // Position below the item
+  left: "0",
+  transform: "translateY(10px)", // Add some spacing
+  padding: "10px",
+  boxSizing: "border-box",
+  color: "white",
 };
 
 export default MainMenu;

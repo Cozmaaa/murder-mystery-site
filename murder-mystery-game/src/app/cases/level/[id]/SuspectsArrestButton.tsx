@@ -96,18 +96,21 @@ const suspectsButtonStyles: React.CSSProperties = {
 };
 
 const buttonStyles: React.CSSProperties = {
-  backgroundColor: "#007bff",
-  color: "white",
+  backgroundColor: "#F5F5DC", // Beige, like aged paper
+  color: "#2F4F4F", // Dark Slate Gray for text
   fontSize: "18px",
   padding: "15px 30px",
-  border: "none",
-  borderRadius: "8px",
+  border: "2px solid #D2B48C", // Tan border
+  borderRadius: "4px",
   cursor: "pointer",
   transition: "background-color 0.3s ease",
+  fontFamily: "'Times New Roman', serif",
+  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.3)",
+  textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
+  backgroundImage: "linear-gradient(135deg, #F5F5DC 25%, #EEE8AA 100%)",
 };
-
 const buttonHoverStyles: React.CSSProperties = {
-  backgroundColor: "#0056b3",
+  backgroundColor: "#EEE8AA", // Light Goldenrod on hover
 };
 
 export default SuspectsArrestButton;
