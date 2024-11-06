@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import dynamic from "next/dynamic";
 import Modal from "./Modal"; // Import the modal component
+import { useRouter } from "next/navigation";
 
 interface DocumentsTableProp {
   level: number;
@@ -24,6 +25,7 @@ const DocumentsTable: React.FC<DocumentsTableProp> = ({
   showAllDocuments,
   setShowAllDocuments,
 }) => {
+  const router=useRouter();
   const [documents, setDocuments] = useState<Document[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedDoc, setSelectedDoc] = useState<Document | null>(null); // State for the selected document
@@ -40,6 +42,9 @@ const DocumentsTable: React.FC<DocumentsTableProp> = ({
         ,{
           credentials: "include",
         });
+        if(response.status===401){
+          router.push('/login');
+        }
         const data = await response.json();
         setDocuments(data);
       } catch (error) {
