@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
+import cookieParser from 'cookie-parser'
 import path from "path";
 import session from "express-session";
 import passport from "passport";
@@ -24,14 +25,20 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "defaultParola",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true if using HTTPS
+      sameSite: "lax", // 'lax' allows some cross-origin requests
+    },
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
 

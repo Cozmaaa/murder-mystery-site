@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+
 interface CaseProps {
   name: string;
   imageName: string;
@@ -16,35 +17,45 @@ const MainMenu: React.FC = () => {
   const router = useRouter();
   const [cases, setCases] = useState<CaseProps[]>([]);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchCases = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/case/",{
-          credentials:"include",
+        const response = await fetch("http://localhost:5000/api/case/", {
+          credentials: "include",
         });
+        if(response.status===401){
+          router.push("/login");
+          return;
+        }
+        setIsLoading(false);
         const data = await response.json();
         setCases(data);
       } catch (error) {
         console.error("Error fetching cases:", error);
       }
     };
+
     fetchCases();
   }, []);
 
   return (
+    isLoading ? (<div></div>):
     <div style={mainMenuStyle}>
       <div style={contentStyle}>
         <div style={casesContainerStyle}>
           {cases.map((caseItem, index) => (
             <Link key={index} href={`/cases/level/${caseItem.level}`} passHref>
               <div
-                style={{...caseStyle,boxShadow:hoveredIndex===index?"0 0 30px 7px #48abe0":"none"}}
-                onMouseOver={()=>setHoveredIndex(index)}
-                onMouseOut={()=>setHoveredIndex(null)}
+                style={{
+                  ...caseStyle,
+                  boxShadow:
+                    hoveredIndex === index ? "0 0 30px 7px #48abe0" : "none",
+                }}
+                onMouseOver={() => setHoveredIndex(index)}
+                onMouseOut={() => setHoveredIndex(null)}
               >
-
                 <div style={paperStyle}>
                   <img
                     src={caseItem.imageUrl}

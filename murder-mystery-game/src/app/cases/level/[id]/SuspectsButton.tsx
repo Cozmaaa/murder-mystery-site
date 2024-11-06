@@ -7,11 +7,11 @@ for the modal to be rendered for the user
 import { useEffect, useState } from "react";
 import SuspectsModal from "./SuspectsModal"; // Import the modal
 
-interface SuspectsButtonProps{
-  level:number;
+interface SuspectsButtonProps {
+  level: number;
 }
 
-const SuspectsButton:React.FC<SuspectsButtonProps>= ({ level }) => {
+const SuspectsButton: React.FC<SuspectsButtonProps> = ({ level }) => {
   const [suspects, setSuspects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +21,10 @@ const SuspectsButton:React.FC<SuspectsButtonProps>= ({ level }) => {
     const fetchSuspects = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/suspects/${level}`
+          `http://localhost:5000/api/suspects/${level}`,
+          {
+            credentials: "include",
+          }
         );
         const data = await response.json();
         setSuspects(data);
@@ -53,11 +56,13 @@ const SuspectsButton:React.FC<SuspectsButtonProps>= ({ level }) => {
       <div style={suspectsButtonStyles}>
         <button
           style={buttonStyles}
-          onMouseEnter={(e ) =>
-            ((e.target as HTMLButtonElement).style.backgroundColor = buttonHoverStyles.backgroundColor!)
+          onMouseEnter={(e) =>
+            ((e.target as HTMLButtonElement).style.backgroundColor =
+              buttonHoverStyles.backgroundColor!)
           }
           onMouseLeave={(e) =>
-            ((e.target as HTMLButtonElement).style.backgroundColor = buttonStyles.backgroundColor!)
+            ((e.target as HTMLButtonElement).style.backgroundColor =
+              buttonStyles.backgroundColor!)
           }
           onClick={handleClick}
         >
@@ -72,7 +77,7 @@ const SuspectsButton:React.FC<SuspectsButtonProps>= ({ level }) => {
             onClose={closeModal}
             suspectChatHistories={suspectChatHistories}
             setSuspectChatHistories={setSuspectChatHistories}
-            currentContent={'chatting'}
+            currentContent={"chatting"}
           />
         </div>
       )}
@@ -80,7 +85,7 @@ const SuspectsButton:React.FC<SuspectsButtonProps>= ({ level }) => {
   );
 };
 
-const suspectsButtonStyles:React.CSSProperties = {
+const suspectsButtonStyles: React.CSSProperties = {
   position: "fixed",
   bottom: "20px", // Button at the bottom
   left: "50%",
@@ -107,7 +112,7 @@ const buttonHoverStyles: React.CSSProperties = {
   backgroundColor: "#EEE8AA", // Light Goldenrod on hover
 };
 
-const modalOverlayStyles:React.CSSProperties = {
+const modalOverlayStyles: React.CSSProperties = {
   position: "fixed",
   top: 0,
   left: 0,

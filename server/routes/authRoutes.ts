@@ -1,13 +1,19 @@
-import express from 'express';
-import passport from 'passport';
+import express, { Request, Response } from "express";
 
-const router = express.Router()
+const router = express.Router();
+
+import { signUp, login,logout} from "../controllers/userController";
+import { authenticateToken } from "../middleware/authMiddleware";
 
 
-import { signUp,login } from '../controllers/userController';
+router.post("/signup", signUp);
+router.post("/login", login);
+router.post('/logout', logout);
 
-router.post('/signup',signUp);
-router.post('/login',login);
+router.get('/status', authenticateToken, (req: Request, res: Response) => {
+  res.status(200).json({ authenticated: true, user: req.user });
+});
+
 
 
 export default router;

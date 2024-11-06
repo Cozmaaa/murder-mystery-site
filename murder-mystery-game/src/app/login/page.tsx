@@ -1,45 +1,29 @@
-"use client"
-import { useState } from "react";
-import router, { useRouter } from "next/navigation";
-import axios from "axios";
+// app/login/page.tsx
 
-const Login = () => {
-    const router = useRouter();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import LoginForm from './LoginForm';
+import jwt from 'jsonwebtoken'
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+
+export default async function LoginPage() {
+  const cookieStore = cookies();
+  const token = cookieStore.get('token')?.value // Replace 'connect.sid' with your session cookie name if different
+
+  let isAuthenticated=false;
+
+  if (token) {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/user/login",
-        { username, password },
-        { withCredentials: true }
-      );
-      console.log(response.data);
-      router.push('/home');
-    } catch (error) {
-      console.error(error);
+      jwt.verify(token, process.env.JWT_SECRET as string);
+      isAuthenticated = true;
+    } catch (err) {
+      console.error(err);
     }
-  };
+  }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Username"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      <button type="submit">Login</button>
-    </form>
-  );
-};
+  if (isAuthenticated) {
+    redirect('/home');
+  }
 
-export default Login;
+  return <LoginForm />;
+}

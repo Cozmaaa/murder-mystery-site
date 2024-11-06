@@ -37,7 +37,9 @@ const DocumentsTable: React.FC<DocumentsTableProp> = ({
       try {
         const response = await fetch(
           `http://localhost:5000/api/documents/${level}`
-        );
+        ,{
+          credentials: "include",
+        });
         const data = await response.json();
         setDocuments(data);
       } catch (error) {

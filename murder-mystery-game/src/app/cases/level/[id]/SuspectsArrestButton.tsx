@@ -27,7 +27,9 @@ const SuspectsArrestButton: React.FC<SuspectsArrestButtonProps> = ({
     const fetchSuspects = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/suspects/${level}`
+          `http://localhost:5000/api/suspects/${level}`,{
+            credentials: "include",
+          }
         );
         const data = await response.json();
         setSuspects(data);
