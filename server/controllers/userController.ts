@@ -40,15 +40,15 @@ export const signUp = async (
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
-      expiresIn: "1d", 
+      expiresIn: "1d",
     });
 
     // Set the JWT as an HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", 
+      secure: process.env.NODE_ENV === "production",
       maxAge: 24 * 60 * 60 * 1000, // 1 day
-      sameSite: "lax", 
+      sameSite: "lax",
     });
 
     res.status(201).json({ message: "User registered and logged in" });
@@ -86,6 +86,47 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-  res.clearCookie('token');
-  res.json({ message: 'Logged out successfully' });
+  res.clearCookie("token");
+  res.json({ message: "Logged out successfully" });
+};
+
+export const addAccesibleCases = async (req: Request, res: Response) => {
+  try {
+    const { userId, addedLevel } = req.body;
+    const user = await UserModel.findByIdAndUpdate(
+      userId,
+      { $addToSet: { accesibleCases: addedLevel } }, // Add without duplicates
+      { new: true, runValidators: false } // Disable validators for this update
+    );
+    if (!user) {
+      res.status(404).send("User not found");
+      return 
+    }
+    res.status(200).send("Level added successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error during adding a new level");
+  }
+};
+
+
+export const getAccesibleCases = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      res.status(401).send("Unauthorized");
+      return;
+    }
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
+    const user = await UserModel.findById(decoded.id);
+    if (!user) {
+      res.status(404).send("User not found");
+      return;
+    }
+    const accesibleCases = user.accesibleCases;
+    res.json(accesibleCases);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error during fetching accesible levels");
+  }
 };

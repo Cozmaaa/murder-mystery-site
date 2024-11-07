@@ -8,6 +8,7 @@ export interface IUser extends Document {
   password?: string;
   googleId?: string;
   githubId?: string;
+  accesibleCases:number[];
 }
 
 const userSchema = new Schema<IUser>(
@@ -18,6 +19,7 @@ const userSchema = new Schema<IUser>(
     password: { type: String, select: false },
     googleId: { type: String, unique: true, sparse: true, select: false },
     githubId: { type: String, unique: true, sparse: true, select: false },
+    accesibleCases:[{type:Number,default:1}]
   },
   { timestamps: true }
 );
