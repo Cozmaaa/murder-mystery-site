@@ -13,6 +13,7 @@ import suspectRouter from "./routes/suspectRoutes";
 import suspectChattingRoutes from "./routes/suspectChattingRoutes";
 import caseRoutes from "./routes/caseRoutes";
 import authRoutes from "./routes/authRoutes";
+import userNoteRoutes from "./routes/userNoteRoutes";
 
 const app = express();
 
@@ -47,6 +48,7 @@ app.use("/api/suspects", suspectRouter);
 app.use("/api/response", suspectChattingRoutes);
 app.use("/api/case/", caseRoutes);
 app.use("/api/user/", authRoutes);
+app.use("/api/userNote",userNoteRoutes)
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 if (!process.env.DATABASE_URI) {
