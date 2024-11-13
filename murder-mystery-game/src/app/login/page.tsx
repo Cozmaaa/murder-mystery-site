@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken'
 
 export default async function LoginPage() {
   const cookieStore = cookies();
-  const token = cookieStore.get('token')?.value // Replace 'connect.sid' with your session cookie name if different
+  const token = cookieStore.get('token')?.value
 
   let isAuthenticated=false;
 
