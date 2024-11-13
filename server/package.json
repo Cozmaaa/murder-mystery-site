@@ -24,10 +24,14 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
     "openai": "^4.67.1",
+    "passport": "^0.7.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.3"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2"
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "@types/passport": "^1.0.17"
   }
 }
