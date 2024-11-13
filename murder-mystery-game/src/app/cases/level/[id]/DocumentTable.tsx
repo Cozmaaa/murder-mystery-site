@@ -38,7 +38,7 @@ const DocumentsTable: React.FC<DocumentsTableProp> = ({
     const fetchDocuments = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/documents/${level}`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/documents/${level}`
         ,{
           credentials: "include",
         });

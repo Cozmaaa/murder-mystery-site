@@ -22,7 +22,7 @@ const MainMenu: React.FC = () => {
   useEffect(() => {
     const fetchCases = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/case/", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/case/`, {
           credentials: "include",
         });
         if (response.status === 401) {
@@ -33,7 +33,7 @@ const MainMenu: React.FC = () => {
         setCases(data);
 
         const responseAccesibleCases = await fetch(
-          "http://localhost:5000/api/user/getAccesibleCases",
+          `${process.env.NEXT_PUBLIC_API_URL}/api/user/getAccesibleCases`,
           {
             credentials: "include",
           }

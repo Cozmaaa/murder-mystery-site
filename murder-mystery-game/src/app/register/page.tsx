@@ -17,7 +17,7 @@ const SignUp = () => {
     e.preventDefault();
     try {
       await axios.post(
-        "http://localhost:5000/api/user/signup",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/signup`,
         { username, email, password },
         { withCredentials: true }
       );

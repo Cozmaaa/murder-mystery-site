@@ -15,7 +15,7 @@ const PlayerNotesButton: React.FC<PlayerNotesButtonProps> = ({ caseLevel }) => {
     const fetchPlayerNoteContent = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/userNote/getUserNote",
+          `${process.env.NEXT_PUBLIC_API_URL}/api/userNote/getUserNote`,
           { caseLevel },
           { withCredentials: true }
         );
@@ -39,7 +39,7 @@ const PlayerNotesButton: React.FC<PlayerNotesButtonProps> = ({ caseLevel }) => {
     // Save the content when the modal closes
     try {
       await axios.post(
-        "http://localhost:5000/api/userNote/editUserNote",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/userNote/editUserNote`,
         {
           caseLevel,
           content,

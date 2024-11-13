@@ -121,7 +121,7 @@ const SuspectsContent: React.FC<SuspectsContentProps> = ({
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/response/generate-suspect-response",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/response/generate-suspect-response`,
         {
           userId: "test",
           suspectName: selectedSuspect.name,

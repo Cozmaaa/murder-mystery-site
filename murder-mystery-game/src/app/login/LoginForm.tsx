@@ -18,7 +18,7 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       await axios.post(
-        "http://localhost:5000/api/user/login",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/login`,
         { username, password },
         { withCredentials: true }
       );
