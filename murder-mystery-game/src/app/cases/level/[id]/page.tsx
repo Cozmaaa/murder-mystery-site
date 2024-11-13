@@ -1,15 +1,11 @@
-/* 
-This is the main file for the page and it includes the Suspects button that opens the suspectsModal
-And it also contains DocumentsTable which is every report/document that is stored in th DB
-*/
-
+// LevelPage.tsx
 "use client";
 import { useRouter, useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import DocumentsTable from "./DocumentTable";
-import Draggable from "react-draggable";
 import SuspectsButton from "./SuspectsButton";
 import SuspectsArrestButton from "./SuspectsArrestButton";
+import PlayerNotesButton from "./PlayerNotesButton";
 
 const LevelPage: React.FC = () => {
   const params = useParams();
@@ -22,22 +18,23 @@ const LevelPage: React.FC = () => {
 
   return (
     <div style={pageStyle}>
-      <SuspectsButton level={parseInt(id)}></SuspectsButton>
+      <PlayerNotesButton caseLevel={parseInt(id)} />
+      <SuspectsButton level={parseInt(id)} />
       <DocumentsTable
         level={parseInt(id)}
         showAllDocuments={showAllDocuments}
         setShowAllDocuments={setShowAllDocuments}
       />
-      <SuspectsArrestButton level={parseInt(id)}></SuspectsArrestButton>
+      <SuspectsArrestButton level={parseInt(id)} />
     </div>
   );
 };
 
-const pageStyle:React.CSSProperties = {
+const pageStyle: React.CSSProperties = {
   backgroundImage: "url(/1.webp)",
   backgroundSize: "cover",
   backgroundPosition: "center",
-  position: "relative", // Ensure that positioned children are relative to this container
+  position: "relative",
   width: "100vw",
   height: "100vh",
 };

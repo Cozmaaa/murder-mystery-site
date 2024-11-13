@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import UserNote from "../models/userNoteModel";
-import { Document } from "mongoose";
 import jwt from "jsonwebtoken";
 import UserModel from "../models/userModel";
 
