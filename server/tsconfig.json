@@ -8,6 +8,6 @@
       "skipLibCheck": true,
       "outDir": "./dist",
     },
-    "include": ["src/**/*.ts", "controllers/**/*.ts", "models/**/*.ts", "public/**/*.ts", "routes/**/*.ts", "services/**/*.ts"],
+    "include": ["src/**/*.ts", "controllers/**/*.ts", "models/**/*.ts", "public/**/*.ts", "routes/**/*.ts", "services/**/*.ts","**/*.ts"],
     "exclude": ["node_modules", "**/*.spec.ts"]
 }
