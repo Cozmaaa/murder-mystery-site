@@ -16,27 +16,28 @@ interface IUser {
   }
   
 
-passport.use(
-  new LocalStrategy(async (username:string, password:string, done) => {
-    try {
-      const user = await UserModel.findOne({ username }).select("+password");
-      if (!user) {
-        return done(null, false, { message: "Incorrect name" });
+  passport.use(
+    new LocalStrategy(async (username: string, password: string, done: (error: any, user?: any, info?: any) => void) => {
+      try {
+        const user = await UserModel.findOne({ username }).select("+password");
+        if (!user) {
+          return done(null, false, { message: "Incorrect name" });
+        }
+        if (!user.password) {
+          return done(null, false, { message: "Password is not set." });
+        }
+  
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+          return done(null, false, { message: "Incorrect password" });
+        }
+        return done(null, user);
+      } catch (error) {
+        return done(error);
       }
-      if (!user.password) {
-        return done(null, false, { message: "Password is not set." });
-      }
-
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        return done(null, false, { message: "Incorrect password" });
-      }
-      return done(null, user);
-    } catch (error) {
-      return done(error);
-    }
-  })
-);
+    })
+  );
+  
 
 passport.serializeUser((user, done) => {
   done(null, (user as IUser)._id);
