@@ -3,7 +3,7 @@ import UserModel, { IUser } from "../models/userModel";
 import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import passport from "passport";
+// import passport from "passport";
 import jwt from "jsonwebtoken";
 
 export const signUp = async (
@@ -58,12 +58,22 @@ export const signUp = async (
   }
 };
 
-export const login = (req: Request, res: Response, next: NextFunction) => {
-  passport.authenticate("local", (err: any, user: IUser, info: any) => {
-    if (err) return next(err);
+export const login = async (req: Request, res: Response, next: NextFunction) => {
+  const { username, password } = req.body as {
+    username: string;
+    password: string;
+  };
+  try {
+    const user = await UserModel.findOne({ username }).select("+password");
     if (!user) {
-      // Authentication failed
-      return res.status(401).json({ message: info.message });
+      return res.status(401).json({ message: "Invalid username or password" });
+    }
+    if(!user.password){
+      return res.status(401).json({ message: "Password is not set" });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid username or password" });
     }
 
     const payload = {
@@ -82,7 +92,10 @@ export const login = (req: Request, res: Response, next: NextFunction) => {
       sameSite: "lax",
     });
     res.json({ message: "User logged in" });
-  })(req, res, next);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
 };
 
 export const logout = (req: Request, res: Response) => {

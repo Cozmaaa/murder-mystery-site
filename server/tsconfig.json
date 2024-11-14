@@ -1,13 +1,16 @@
 {
-    "compilerOptions": {
-      "target": "ES6",
-      "module": "commonjs",
-      "strict": true,
-      "esModuleInterop": true,
-      "moduleResolution": "Node",
-      "skipLibCheck": true,
-      "outDir": "./dist",
-    },
-    "include": ["src/**/*.ts", "controllers/**/*.ts", "models/**/*.ts", "public/**/*.ts", "routes/**/*.ts", "services/**/*.ts","**/*.ts"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./node_modules/@types", "./types"]
+  },
+  "include": ["src/**/*.ts", "controllers/**/*.ts", "models/**/*.ts", "routes/**/*.ts", "services/**/*.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
