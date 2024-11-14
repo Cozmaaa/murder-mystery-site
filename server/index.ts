@@ -57,9 +57,6 @@ app.use(
   })
 );
 
-// app.use(passport.initialize());
-// app.use(passport.session());
-
 app.use("/api/documents", documentRouter);
 app.use("/api/suspects", suspectRouter);
 app.use("/api/response", suspectChattingRoutes);

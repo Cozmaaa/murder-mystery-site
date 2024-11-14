@@ -43,7 +43,8 @@ postcss.config.mjs
 murder-mystery-game/.next/
 murder-mystery-game/out/
 murder-mystery-game/build/
-murder-mystery-game/server/dist
+murder-mystery-game/server/dist/
+
 
 # Ignore empty module
 murder-mystery-game/empty-module.ts
