@@ -21,8 +21,23 @@ const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const userNoteRoutes_1 = __importDefault(require("./routes/userNoteRoutes"));
 const app = (0, express_1.default)();
 // Middleware
+const allowedOrigins = [
+    "http://localhost:3000",
+    "https://murder-mystery-site-git-main-cozmaaas-projects.vercel.app",
+    "https://murder-mystery-site.onrender.com",
+];
 app.use((0, cors_1.default)({
-    origin: "http://localhost:3000",
+    origin: function (origin, callback) {
+        // Allow requests with no origin, like mobile apps or curl requests
+        if (!origin)
+            return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        else {
+            return callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
 }));
 app.use(body_parser_1.default.json());
