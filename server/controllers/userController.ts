@@ -46,9 +46,9 @@ export const signUp = async (
     // Set the JWT as an HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 day
-      sameSite: "lax",
+      sameSite: "none",
     });
 
     res.status(201).json({ message: "User registered and logged in" });

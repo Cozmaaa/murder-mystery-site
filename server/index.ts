@@ -20,6 +20,7 @@ const app = express();
 // Middleware
 const allowedOrigins = [
   "http://localhost:3000",
+  "https://murder-mystery-site.vercel.app/",
   "https://murder-mystery-site-git-main-cozmaaas-projects.vercel.app",
   "https://murder-mystery-site.onrender.com",
 ];
@@ -50,8 +51,8 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // Set to true if using HTTPS
-      sameSite: "lax", // 'lax' allows some cross-origin requests
+      secure: true, // Set to true if using HTTPS
+      sameSite: "none", // 'lax' allows some cross-origin requests
     },
   })
 );
