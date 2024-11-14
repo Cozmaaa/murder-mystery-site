@@ -83,9 +83,9 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         });
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: true,
             maxAge: 1000 * 60 * 60 * 24,
-            sameSite: "lax",
+            sameSite: "none",
         });
         res.json({ message: "User logged in" });
     }

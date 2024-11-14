@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only index.ts",
-    "build": "tsc",
+    "build": "tsc && copyfiles \"public/**/*\" dist",
     "start": "node dist/index.js"
   },
   "keywords": [],
@@ -36,6 +36,7 @@
     "@types/cors": "^2.8.17",
     "@types/express-session": "^1.18.0",
     "@types/passport": "^1.0.17",
-    "@types/passport-local": "^1.0.38"
+    "@types/passport-local": "^1.0.38",
+    "copyfiles": "^2.4.1"
   }
 }
