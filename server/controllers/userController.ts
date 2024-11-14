@@ -58,7 +58,7 @@ export const signUp = async (
   }
 };
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (req: Request, res: Response, next: NextFunction):Promise<void> => {
   const { username, password } = req.body as {
     username: string;
     password: string;
@@ -66,14 +66,17 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   try {
     const user = await UserModel.findOne({ username }).select("+password");
     if (!user) {
-      return res.status(401).json({ message: "Invalid username or password" });
+      res.status(401).json({ message: "Invalid username or password" });
+      return 
     }
     if(!user.password){
-      return res.status(401).json({ message: "Password is not set" });
+      res.status(401).json({ message: "Password is not set" });
+      return 
     }
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid username or password" });
+      res.status(401).json({ message: "Invalid username or password" });
+      return 
     }
 
     const payload = {
