@@ -4,8 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from 'cookie-parser'
 import path from "path";
-import session from "express-session";
-import passport from "passport";
+// import session from "express-session";
 require("dotenv").config();
 import "./config/passport";
 import documentRouter from "./routes/documentRoutes";
@@ -27,7 +26,7 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: function (origin, callback) {
+    origin: function (origin:any, callback:any) {
       // Allow requests with no origin, like mobile apps or curl requests
       if (!origin) return callback(null, true);
 
@@ -45,17 +44,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "defaultParola",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: true, // Set to true if using HTTPS
-      sameSite: "none", // 'lax' allows some cross-origin requests
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET || "defaultParola",
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       secure: true, // Set to true if using HTTPS
+//       sameSite: "none", // 'lax' allows some cross-origin requests
+//     },
+//   })
+// );
 
 app.use("/api/documents", documentRouter);
 app.use("/api/suspects", suspectRouter);
