@@ -16,7 +16,7 @@ exports.getAccesibleCases = exports.addAccesibleCases = exports.logout = exports
 const userModel_1 = __importDefault(require("../models/userModel"));
 const http_errors_1 = __importDefault(require("http-errors"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const passport_1 = __importDefault(require("passport"));
+// import passport from "passport";
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const signUp = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, email, password } = req.body;
@@ -45,9 +45,9 @@ const signUp = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         // Set the JWT as an HTTP-only cookie
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: true,
             maxAge: 24 * 60 * 60 * 1000, // 1 day
-            sameSite: "lax",
+            sameSite: "none",
         });
         res.status(201).json({ message: "User registered and logged in" });
     }
@@ -57,13 +57,22 @@ const signUp = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.signUp = signUp;
-const login = (req, res, next) => {
-    passport_1.default.authenticate("local", (err, user, info) => {
-        if (err)
-            return next(err);
+const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { username, password } = req.body;
+    try {
+        const user = yield userModel_1.default.findOne({ username }).select("+password");
         if (!user) {
-            // Authentication failed
-            return res.status(401).json({ message: info.message });
+            res.status(401).json({ message: "Invalid username or password" });
+            return;
+        }
+        if (!user.password) {
+            res.status(401).json({ message: "Password is not set" });
+            return;
+        }
+        const isMatch = yield bcrypt_1.default.compare(password, user.password);
+        if (!isMatch) {
+            res.status(401).json({ message: "Invalid username or password" });
+            return;
         }
         const payload = {
             id: user._id,
@@ -79,8 +88,12 @@ const login = (req, res, next) => {
             sameSite: "lax",
         });
         res.json({ message: "User logged in" });
-    })(req, res, next);
-};
+    }
+    catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
 exports.login = login;
 const logout = (req, res) => {
     res.clearCookie("token");

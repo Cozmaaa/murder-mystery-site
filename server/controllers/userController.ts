@@ -90,9 +90,9 @@ export const login = async (req: Request, res: Response, next: NextFunction):Pro
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       maxAge: 1000 * 60 * 60 * 24,
-      sameSite: "lax",
+      sameSite: "none",
     });
     res.json({ message: "User logged in" });
   } catch (error) {
