@@ -90,9 +90,10 @@ export const login = async (req: Request, res: Response, next: NextFunction):Pro
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24,
       sameSite: "none",
+      domain:process.env.NODE_ENV==="production"?".murder-mystery-site.onrender.com":undefined
     });
     res.json({ message: "User logged in" });
   } catch (error) {
