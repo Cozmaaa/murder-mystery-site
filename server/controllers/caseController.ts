@@ -57,3 +57,26 @@ export const getAllCases = async (req:Request,res:Response):Promise<void>=>{
         res.status(500).send("Server error during fetching all documents");
     }
 }
+
+export const getCaseDetails = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { level } = req.body;
+  
+      const existingCase = await CaseModel.findOne({ level });
+      if (!existingCase) {
+        res.status(404).send('Document not found');
+        return;
+      }
+  
+      const imageUrl = `${process.env.BASE_URL}/public/levels/${level}/${existingCase.imageName}.webp`;
+      const caseDetails = {
+        ...existingCase.toObject(),
+        imageUrl,
+      };
+  
+      res.json(caseDetails);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send('Server error during fetching a document');
+    }
+  };

@@ -13,6 +13,8 @@ import suspectChattingRoutes from "./routes/suspectChattingRoutes";
 import caseRoutes from "./routes/caseRoutes";
 import authRoutes from "./routes/authRoutes";
 import userNoteRoutes from "./routes/userNoteRoutes";
+import purchaseRoutes from "./routes/purchaseRoutes";
+import { handleWebhook } from "./controllers/webhook";
 
 const app = express();
 
@@ -40,6 +42,7 @@ app.use(
   })
 );
 
+app.post("/webhook",express.raw({type:"application/json"}),handleWebhook);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -62,6 +65,7 @@ app.use("/api/response", suspectChattingRoutes);
 app.use("/api/case/", caseRoutes);
 app.use("/api/user/", authRoutes);
 app.use("/api/userNote",userNoteRoutes)
+app.use("/api/checkout", purchaseRoutes);
 app.use("/public", express.static(path.join(__dirname, "public")));
 
 if (!process.env.DATABASE_URI) {

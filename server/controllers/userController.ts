@@ -92,7 +92,7 @@ export const login = async (req: Request, res: Response, next: NextFunction):Pro
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24,
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV==="production"?"none":"lax",
       domain:process.env.NODE_ENV==="production"?"murder-mystery-site.onrender.com":undefined
     });
     res.json({ message: "User logged in" });
