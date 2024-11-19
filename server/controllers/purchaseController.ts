@@ -5,9 +5,14 @@ if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error("Stripe secret key is not set");
 }
 
+const getDomain = (req: Request): string => {
+  const origin = req.headers.origin || `http://${req.headers.host}`;
+  return origin;
+};
+
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-const YOUR_DOMAIN = process.env.CLIENT_URL || "http://localhost:3000";
 
 export const createCheckoutSession = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -28,6 +33,8 @@ export const createCheckoutSession = async (req: Request, res: Response): Promis
 
     console.log(lineItems[0].price_data.product_data.images);
     products.map((product:any)=>product.description="");
+
+    const YOUR_DOMAIN = getDomain(req);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],

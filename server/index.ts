@@ -18,19 +18,12 @@ import { handleWebhook } from "./controllers/webhook";
 
 const app = express();
 
-// Middleware
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://murder-mystery-site.vercel.app/",
-  "https://murder-mystery-site-git-main-cozmaaas-projects.vercel.app",
-  "https://murder-mystery-site.onrender.com",
-];
 
 app.use(
   cors({
     origin: function (origin, callback) {
       console.log("CORS request from:", origin);
-      if (!origin || origin.endsWith(".vercel.app") || origin.endsWith(".onrender.com")) {
+      if (!origin || origin.endsWith(".vercel.app") || origin.endsWith(".onrender.com")||origin.endsWith("localhost:3000")) {
         callback(null, true);
       } else {
         console.error(`Blocked by CORS: ${origin}`);
