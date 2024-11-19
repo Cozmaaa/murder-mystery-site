@@ -24,7 +24,7 @@ export const createCheckoutSession = async (req: Request, res: Response): Promis
         currency: "usd",
         product_data: {
           name: product.name,
-          images: ["https://cdn.discordapp.com/attachments/333151262168317953/1307467933378936893/DaniCase.png?ex=673a69e6&is=67391866&hm=6bee474a7907225b3446be02c58e6d25ef707edfa85a5bf350553bac86ce0c37&"], // Use 'images' array instead of 'image'
+          images: [product.imageUrl]
         },
         unit_amount: Math.round(1 * 100), 
       },
