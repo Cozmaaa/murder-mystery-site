@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #ffe4e6, #fecaca);
+    padding: 20px;
+  }
+  

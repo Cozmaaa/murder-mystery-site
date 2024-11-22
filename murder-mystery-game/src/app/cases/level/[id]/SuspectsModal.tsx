@@ -2,71 +2,50 @@
 
 import SuspectsContent from "./suspectsContent";
 import SuspectArrestContent from "./SuspectArrestContent";
-import { useState } from "react";
 
 interface SuspectsModalProps {
-  suspects: any[];
-  onClose: () => void;
-  currentContent: string;
-  suspectChatHistories?: any;
-  setSuspectChatHistories?: any;
+    suspects: any[];
+    onClose: () => void;
+    currentContent: string;
+    suspectChatHistories?: any;
+    setSuspectChatHistories?: any;
 }
 
-const SuspectsModal:React.FC<SuspectsModalProps> = ({ onClose, suspects,suspectChatHistories,setSuspectChatHistories,currentContent }) => {
+const SuspectsModal: React.FC<SuspectsModalProps> = ({
+    onClose,
+    suspects,
+    suspectChatHistories,
+    setSuspectChatHistories,
+    currentContent,
+}) => {
+    const renderModal = () => {
+        switch (currentContent) {
+            case "chatting":
+                return (
+                    <SuspectsContent
+                        suspects={suspects}
+                        suspectChatHistories={suspectChatHistories}
+                        setSuspectChatHistories={setSuspectChatHistories}
+                    />
+                );
+            case "arrest":
+                return <SuspectArrestContent suspects={suspects} />;
+        }
+    };
 
-  const renderModal = ()=>{
-    switch(currentContent){
-      case "chatting":
-        return(<SuspectsContent suspects={suspects} suspectChatHistories={suspectChatHistories} setSuspectChatHistories={setSuspectChatHistories}></SuspectsContent>);
-      case 'arrest':
-        return(<SuspectArrestContent suspects={suspects}></SuspectArrestContent>);
-    }
-  }
-
-  return (
-    <div
-      className="modal-suspects-overlay"
-      onClick={onClose}
-      style={modalOverlayStyles}
-    >
-      <div
-        className="modal-suspects-content"
-        onClick={(e) => e.stopPropagation()}
-        style={modalContentStyles}
-      >       
-        {renderModal()}
-      </div>
-    </div>
-  );
-};
-
-const modalOverlayStyles:React.CSSProperties = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  width: "100vw",
-  height: "100vh",
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  zIndex: 10, // Ensures modal is above other content
-};
-
-const modalContentStyles:React.CSSProperties = {
-  backgroundColor: "#fff",
-  padding: "20px",
-  borderRadius: "8px",
-  maxWidth: "90%",
-  maxHeight: "90%",
-  overflow: "auto",
-  position: "relative", // Ensure close button positions correctly
-};
-
-const closeButtonStyle:React.CSSProperties = {
-  position: "absolute",
-  top: "10px",
-  right: "10px",
+    return (
+        <div
+            className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50"
+            onClick={onClose}
+        >
+            <div
+                className="bg-gray-900 text-white p-6 rounded-lg max-w-4xl w-full max-h-full overflow-auto relative"
+                onClick={(e) => e.stopPropagation()}
+            >
+                {renderModal()}
+            </div>
+        </div>
+    );
 };
 
 export default SuspectsModal;

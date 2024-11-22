@@ -6,6 +6,7 @@ import DocumentsTable from "./DocumentTable";
 import SuspectsButton from "./SuspectsButton";
 import SuspectsArrestButton from "./SuspectsArrestButton";
 import PlayerNotesButton from "./PlayerNotesButton";
+import HintsButton from "./hintButton";
 
 const LevelPage: React.FC = () => {
   const params = useParams();
@@ -25,6 +26,7 @@ const LevelPage: React.FC = () => {
         showAllDocuments={showAllDocuments}
         setShowAllDocuments={setShowAllDocuments}
       />
+      <HintsButton level={parseInt(id)}></HintsButton>
       <SuspectsArrestButton level={parseInt(id)} />
     </div>
   );

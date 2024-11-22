@@ -19,7 +19,7 @@ const userSchema = new Schema<IUser>(
     password: { type: String, select: false },
     googleId: { type: String, unique: true, sparse: true, select: false },
     githubId: { type: String, unique: true, sparse: true, select: false },
-    accesibleCases:[{type:Number,default:[1]}]
+    accesibleCases:{type:[Number],default:[1]}
   },
   { timestamps: true }
 );
